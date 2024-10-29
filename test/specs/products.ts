@@ -17,6 +17,7 @@ describe('Products', () => {
         await browser.pause(1000);
         await Products.remove.click();
         expect(await Products.addToCard.isDisplayed())
+        
     })
 
     it('apply the "Price (low to high)" filter', async () => {
@@ -25,17 +26,26 @@ describe('Products', () => {
         await browser.pause(1000);
         await Products.filterButton.click();
         await Products.priceLowToHigher.click();
-        const products = await $$("//*[@class='pricebar']");
-       // const productPrices = await Promise.all(
-         //   products.map(async (element) => {
-          //      const priceText = await element.getText();
-         //       return parseFloat(priceText.replace(/[^0-9.-]+/g, ''));
-       //     })
-            
-    //    );
+       const prices: number[] = await Products.poductsList.map(async (element) => {
+        const priceText = await element.getText();
+        return parseInt(priceText.replace(/[^0-9.]/g, ''));
+       })
+       const sortedPrices = [...prices].sort((a, b) => a - b);
+      expect(prices).toEqual(sortedPrices);
 
-        //expect(await Products.addToCard.isDisplayed())
+    });
 
-        console.log(products);
-    })
+    it('apply the "Price (high to Low)" filter', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        await Products.filterButton.click();
+        await Products.priceHighToLow.click();
+       const prices: number[] = await Products.poductsList.map(async (element) => {
+        const priceText = await element.getText();
+        return parseInt(priceText.replace(/[^0-9.]/g, ''));
+       })
+       const sortedPrices = [...prices].sort((a, b) => b - a);
+      expect(prices).toEqual(sortedPrices);
+    });
 });
