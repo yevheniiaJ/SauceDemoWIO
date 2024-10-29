@@ -28,5 +28,13 @@ class Products extends Page {
         return $('//select[@class="product_sort_container"]//option[3]')
     }
 
+    public get priceHighToLow() {
+        return $('//select[@class="product_sort_container"]//option[4]')
+    }
+
+    public get poductsList() {
+        return $$('//*[@class="pricebar"]')
+    }
+
 }
 export default new Products();
