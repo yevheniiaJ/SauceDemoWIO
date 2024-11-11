@@ -17,7 +17,7 @@ describe('Products', () => {
         await browser.pause(1000);
         await Products.remove.click();
         expect(await Products.addToCard.isDisplayed())
-        
+
     })
 
     it('apply the "Price (low to high)" filter', async () => {
@@ -26,12 +26,12 @@ describe('Products', () => {
         await browser.pause(1000);
         await Products.filterButton.click();
         await Products.priceLowToHigher.click();
-       const prices: number[] = await Products.poductsList.map(async (element) => {
-        const priceText = await element.getText();
-        return parseInt(priceText.replace(/[^0-9.]/g, ''));
-       })
-       const sortedPrices = [...prices].sort((a, b) => a - b);
-      expect(prices).toEqual(sortedPrices);
+        const prices: number[] = await Products.poductsList.map(async (element) => {
+            const priceText = await element.getText();
+            return parseInt(priceText.replace(/[^0-9.]/g, ''));
+        })
+        const sortedPrices = [...prices].sort((a, b) => a - b);
+        expect(prices).toEqual(sortedPrices);
 
     });
 
@@ -41,11 +41,40 @@ describe('Products', () => {
         await browser.pause(1000);
         await Products.filterButton.click();
         await Products.priceHighToLow.click();
-       const prices: number[] = await Products.poductsList.map(async (element) => {
-        const priceText = await element.getText();
-        return parseInt(priceText.replace(/[^0-9.]/g, ''));
-       })
-       const sortedPrices = [...prices].sort((a, b) => b - a);
-      expect(prices).toEqual(sortedPrices);
+        const prices: number[] = await Products.poductsList.map(async (element) => {
+            const priceText = await element.getText();
+            return parseInt(priceText.replace(/[^0-9.]/g, ''));
+        })
+        const sortedPrices = [...prices].sort((a, b) => b - a);
+        expect(prices).toEqual(sortedPrices);
+
+    });
+
+    it('apply the "Name (A to Z)" filter', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        await Products.filterButton.click();
+        await Products.nameASC.click();
+    
+        const elementNames: string[] = await Products.productsListByName.map(async (element) => {
+           return await element.getText();
+        })
+        const sortedText = [...elementNames].sort();
+        expect(sortedText).toEqual(elementNames);
+    });
+
+    it('apply the "Name (Z to A)" filter', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        await Products.filterButton.click();
+        await Products.nameDSC.click();
+    
+        const elementNames: string[] = await Products.productsListByName.map(async (element) => {
+           return await element.getText();
+        })
+        const sortedText = [...elementNames].sort((a,b)=>b.localeCompare(a));
+        expect(sortedText).toEqual(elementNames);
     });
 });
