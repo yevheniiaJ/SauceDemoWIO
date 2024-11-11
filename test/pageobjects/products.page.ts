@@ -32,8 +32,20 @@ class Products extends Page {
         return $('//select[@class="product_sort_container"]//option[4]')
     }
 
+    public get nameASC() {
+        return $(`//select[@class="product_sort_container"]//option[1]`)
+    }
+
+    public get nameDSC() {
+        return $(`//select[@class="product_sort_container"]//option[2]`)
+    }
+
     public get poductsList() {
         return $$('//*[@class="pricebar"]')
+    }
+
+    public get productsListByName(){
+        return $$('//div[@class="inventory_item_name "]')
     }
 
 }
