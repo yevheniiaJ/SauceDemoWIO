@@ -48,5 +48,22 @@ class Products extends Page {
         return $$('//div[@class="inventory_item_name "]')
     }
 
+    public get productsTitle(){
+        return $('//*[@id="header_container"]/div[2]/span')
+    }
 }
+
+   export async function addSeveralProducts(selectors: string []): Promise<void> {
+        for (const selector of selectors) {
+            const addToCartButton  = browser.$(selector);
+            if (await addToCartButton.isDisplayed()) {
+                await addToCartButton.click();
+                console.log (`Product is added to cart`)
+            } else {
+                console.log (`Product is not added to cart`)
+            }
+            await browser.pause(1000);
+        }
+    }
+
 export default new Products();

@@ -1,6 +1,8 @@
 import { expect } from '@wdio/globals'
 import Products from '../pageobjects/products.page.js'
 import LoginPage from '../pageobjects/login.page.ts';
+import { addSeveralProducts} from '../pageobjects/products.page.ts'
+import ProductsDetailsPage from '../pageobjects/productDetails.page.ts'
 
 describe('Products', () => {
     it('add a product to the cart', async () => {
@@ -77,4 +79,26 @@ describe('Products', () => {
         const sortedText = [...elementNames].sort((a,b)=>b.localeCompare(a));
         expect(sortedText).toEqual(elementNames);
     });
+
+    it('add several products to the cart', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        const selectors = [
+            `//*[@data-test="add-to-cart-sauce-labs-backpack"]`,
+            `//*[@data-test="add-to-cart-sauce-labs-bike-light"]`,
+            `//*[@data-test="add-to-cart-sauce-labs-bolt-t-shirt"]`
+        ]
+        await addSeveralProducts(selectors);
+        const badgeNumber = await ProductsDetailsPage.cartBadge.getText();
+        expect((badgeNumber)).toEqual('3');
+        const removeSelectors = [
+            `//*[@data-test="remove-sauce-labs-backpack"]`,
+            `//*[@data-test="remove-sauce-labs-bike-light"]`,
+            `//*[@data-test="remove-sauce-labs-bolt-t-shirt"]`
+        ]
+        await addSeveralProducts(removeSelectors);
+        await expect (ProductsDetailsPage.cartBadge).not.toExist();
+    })
+
 });
