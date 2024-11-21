@@ -1,7 +1,7 @@
 import LoginPage from '../pageobjects/login.page.ts';
 import AllPages from '../pageobjects/all.pages.ts';
 
-describe.only ('All Pages', () => {
+describe ('All Pages', () => {
     it('Verify the Twitter icon', async () => {
         await LoginPage.open()
         await LoginPage.login('standard_user', 'secret_sauce')
