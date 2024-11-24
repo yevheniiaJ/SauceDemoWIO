@@ -25,19 +25,19 @@ describe('Humburger Menu', () => {
         await ProductsDetailsPage.productLink.click();
         await HumburgerMenu.menu.click();
         await HumburgerMenu.allItems.click();
-        const elementsNumber1 = await  Products.poductsList.length;
+        const elementsNumber1 = await Products.poductsList.length;
         expect(elementsNumber).toStrictEqual(elementsNumber1);
-    
+
     })
 
     it('verify app state to be resetted', async () => {
         await LoginPage.open()
         await LoginPage.login('standard_user', 'secret_sauce')
         await Products.addToCard.click();
-        await Products.cartBadge.waitForDisplayed({timeout: 3000});
+        await Products.cartBadge.waitForDisplayed({ timeout: 3000 });
         await HumburgerMenu.menu.click();
         await HumburgerMenu.resetAppState.click();
-        await expect (ProductsDetailsPage.cartBadge).not.toExist();
+        await expect(ProductsDetailsPage.cartBadge).not.toExist();
     })
 
 
@@ -50,6 +50,15 @@ describe('Humburger Menu', () => {
         const url = await browser.getUrl();
         expect(url1).toEqual('https://www.saucedemo.com/inventory.html');
         expect(url).toEqual('https://www.saucedemo.com/')
+    })
+
+    it.only('Verify Log out ', async () => {
+        await LoginPage.open();
+        await LoginPage.login('standard_user', 'secret_sauce');
+        await HumburgerMenu.menu.click();
+        await expect(HumburgerMenu.logOutLink).toBeDisplayed();
+        await HumburgerMenu.closebutton.click();
+        await expect(HumburgerMenu.logOutLink).not.toBeDisplayed();
     })
 
 });

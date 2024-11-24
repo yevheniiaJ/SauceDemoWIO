@@ -22,6 +22,10 @@ class HumburgerMenu extends Page {
     public get logOutLink() {
         return $(`//a[@id='logout_sidebar_link']`);
     }
+
+    public get closebutton(){
+        return $(`//button[@id='react-burger-cross-btn']`);
+    }
 }
 
 export default new HumburgerMenu();
