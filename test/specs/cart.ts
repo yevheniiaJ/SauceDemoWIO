@@ -1,0 +1,50 @@
+import { expect } from '@wdio/globals'
+import Products from '../pageobjects/products.page.js'
+import LoginPage from '../pageobjects/login.page.ts';
+import Cart from '../pageobjects/cart.page.ts';
+import { addSeveralProducts } from '../pageobjects/products.page.ts'
+import ProductsDetailsPage from '../pageobjects/productDetails.page.ts'
+
+describe('Cart', () => {
+    it('verify the continue shopping feature', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        await Cart.cartButton.click();
+        expect(await browser.getUrl()).toEqual('https://www.saucedemo.com/cart.html');
+        await Cart.continueShopingButton.click();
+        expect(await browser.getUrl()).toEqual('https://www.saucedemo.com/inventory.html');
+    })
+
+    it('verify removing a product from the cart', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        await Products.addToCard.click();
+        await Cart.cartButton.click();
+        await expect(ProductsDetailsPage.productName).toBeDisplayed();
+        await Cart.removeButton.click();
+        await expect(ProductsDetailsPage.productName).not.toBeDisplayed();
+    })
+
+    it.only('verify removing several products from the cart', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        const selectors = [
+            `//*[@data-test="add-to-cart-sauce-labs-backpack"]`,
+            `//*[@data-test="add-to-cart-sauce-labs-bike-light"]`,
+            `//*[@data-test="add-to-cart-sauce-labs-bolt-t-shirt"]`
+        ]
+        await addSeveralProducts(selectors);
+        await Cart.cartButton.click();
+        const removeSelectors = [
+            `//button[@data-test='remove-sauce-labs-backpack']`,
+            `//button[@data-test='remove-sauce-labs-bike-light']`,
+            `//button[@data-test="remove-sauce-labs-bolt-t-shirt"]`
+        ]
+        await addSeveralProducts(removeSelectors);
+        await expect(ProductsDetailsPage.cartBadge).not.toExist();
+    })
+
+});
