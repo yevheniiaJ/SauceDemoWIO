@@ -27,7 +27,7 @@ describe('Cart', () => {
         await expect(ProductsDetailsPage.productName).not.toBeDisplayed();
     })
 
-    it.only('verify removing several products from the cart', async () => {
+    it('verify removing several products from the cart', async () => {
         await LoginPage.open()
         await LoginPage.login('standard_user', 'secret_sauce')
         await browser.pause(1000);
@@ -47,4 +47,20 @@ describe('Cart', () => {
         await expect(ProductsDetailsPage.cartBadge).not.toExist();
     })
 
+    it.only('verify the "Your information" form by using valid data', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        await Products.addToCard.click();
+        await Cart.cartButton.click();
+        const itemPrice = parseFloat((await Cart.itemPrice.getText()).replace(/[^0-9.]/g, ''));
+        await Cart.checkoutButton.click();
+        await Cart.informationForm('Anna', 'Novicka', '23455');
+        await Cart.continueButton.click();
+        const totalPrice = parseFloat((await Cart.itemPrice.getText()).replace(/[^0-9.]/g, ''));
+        console.log(totalPrice);
+        await expect(itemPrice).toEqual(totalPrice);
+     
+    })
+    
 });

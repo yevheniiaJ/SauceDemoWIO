@@ -14,6 +14,40 @@ class Cart extends Page {
     public get removeButton() {
         return $(`//button[@class='btn btn_secondary btn_small cart_button']`);
     }
+
+    public get checkoutButton () {
+        return $(`//button[@class='btn btn_action btn_medium checkout_button ']`)
+    }
+
+    public get firstNameField() {
+        return $(`//input[@id='first-name']`)
+    }
+
+    public get lastNamneField() {
+        return $(`//input[@id='last-name']`)
+    }
+
+    public get postalCodeField() {
+        return $(`//input[@id='postal-code']`)
+    }
+
+    public get continueButton() {
+        return $(`//input[@id='continue']`)
+    }
+
+    public get itemPrice() {
+        return $(`//div[@data-test='inventory-item-price']`)
+    }
+
+    public get itemTotalPrice() {
+        return $(`//div[@data-test='subtotal-label']`)
+    }
+
+    public async informationForm (firstname: string, lastname: string, zip: string) {
+        await this.firstNameField.setValue(firstname);
+        await this.lastNamneField.setValue(lastname);
+        await this.postalCodeField.setValue(zip);
+    }
 }
 
 export default new Cart();
