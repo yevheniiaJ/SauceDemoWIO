@@ -47,7 +47,7 @@ describe('Cart', () => {
         await expect(ProductsDetailsPage.cartBadge).not.toExist();
     })
 
-    it.only('verify the "Your information" form by using valid data', async () => {
+    it('verify the "Your information" form by using valid data', async () => {
         await LoginPage.open()
         await LoginPage.login('standard_user', 'secret_sauce')
         await browser.pause(1000);
@@ -60,6 +60,21 @@ describe('Cart', () => {
         const totalPrice = parseFloat((await Cart.itemPrice.getText()).replace(/[^0-9.]/g, ''));
         console.log(totalPrice);
         await expect(itemPrice).toEqual(totalPrice);
+     
+    })
+
+
+    it.only('verify the "Your information" form by using invalid data (empty state)', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        await Products.addToCard.click();
+        await Cart.cartButton.click();
+        await Cart.checkoutButton.click();
+        await Cart.continueButton.click();
+        await expect (Cart.formError).toBeDisplayed();
+        const errors = await Cart.fieldErrors.length;       
+        await expect(errors).toEqual(3);
      
     })
     

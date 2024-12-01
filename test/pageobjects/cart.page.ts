@@ -43,6 +43,14 @@ class Cart extends Page {
         return $(`//div[@data-test='subtotal-label']`)
     }
 
+    public get formError() {
+        return $(`//h3[@data-test='error']`)
+    }
+
+    public get fieldErrors() {
+        return $$(`//input[@class='input_error form_input error']`)
+    }
+
     public async informationForm (firstname: string, lastname: string, zip: string) {
         await this.firstNameField.setValue(firstname);
         await this.lastNamneField.setValue(lastname);
