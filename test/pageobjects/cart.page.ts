@@ -51,6 +51,18 @@ class Cart extends Page {
         return $$(`//input[@class='input_error form_input error']`)
     }
 
+    public get cancelYourInformation() {
+        return $(`//button[@class='btn btn_secondary back btn_medium cart_cancel_link']`)
+    }
+
+    public get checkoutInformationTitle() {
+        return $(`//span[text()='Checkout: Your Information']`)
+    }
+
+    public get yorCartTitle() {
+        return $(`//span[text()='Your Cart']`)
+    }
+
     public async informationForm (firstname: string, lastname: string, zip: string) {
         await this.firstNameField.setValue(firstname);
         await this.lastNamneField.setValue(lastname);

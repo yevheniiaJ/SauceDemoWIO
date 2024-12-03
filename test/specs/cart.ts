@@ -78,7 +78,7 @@ describe('Cart', () => {
      
     })
 
-    it.only('verify the "Your information" form by using invalid zip Code', async () => {
+    it('verify the "Your information" form by using invalid zip Code', async () => {
         await LoginPage.open()
         await LoginPage.login('standard_user', 'secret_sauce')
         await browser.pause(1000);
@@ -90,5 +90,19 @@ describe('Cart', () => {
         await expect (Cart.formError).toBeDisplayed();
      
     })
+    it.only('verify cancelling the "Your information" step', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        await Products.addToCard.click();
+        await Cart.cartButton.click();
+        await Cart.checkoutButton.click();
+        await expect(Cart.checkoutInformationTitle).toBeDisplayed();
+        await Cart.cancelYourInformation.click();
+        await expect (Cart.yorCartTitle).toBeDisplayed();
+     
+    })
+
+
     
 });
