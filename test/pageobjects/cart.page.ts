@@ -15,7 +15,7 @@ class Cart extends Page {
         return $(`//button[@class='btn btn_secondary btn_small cart_button']`);
     }
 
-    public get checkoutButton () {
+    public get checkoutButton() {
         return $(`//button[@class='btn btn_action btn_medium checkout_button ']`)
     }
 
@@ -59,11 +59,16 @@ class Cart extends Page {
         return $(`//span[text()='Checkout: Your Information']`)
     }
 
-    public get yorCartTitle() {
+    public get yourCartTitle() {
         return $(`//span[text()='Your Cart']`)
     }
 
-    public async informationForm (firstname: string, lastname: string, zip: string) {
+    public get checkoutOverviewTitle() {
+        return $(`//span[text()='Checkout: Overview']`)
+    }
+
+
+    public async informationForm(firstname: string, lastname: string, zip: string) {
         await this.firstNameField.setValue(firstname);
         await this.lastNamneField.setValue(lastname);
         await this.postalCodeField.setValue(zip);

@@ -60,7 +60,7 @@ describe('Cart', () => {
         const totalPrice = parseFloat((await Cart.itemPrice.getText()).replace(/[^0-9.]/g, ''));
         console.log(totalPrice);
         await expect(itemPrice).toEqual(totalPrice);
-     
+
     })
 
 
@@ -72,10 +72,10 @@ describe('Cart', () => {
         await Cart.cartButton.click();
         await Cart.checkoutButton.click();
         await Cart.continueButton.click();
-        await expect (Cart.formError).toBeDisplayed();
-        const errors = await Cart.fieldErrors.length;       
+        await expect(Cart.formError).toBeDisplayed();
+        const errors = await Cart.fieldErrors.length;
         await expect(errors).toEqual(3);
-     
+
     })
 
     it('verify the "Your information" form by using invalid zip Code', async () => {
@@ -87,9 +87,25 @@ describe('Cart', () => {
         await Cart.checkoutButton.click();
         await Cart.informationForm('Anna', 'Novicka', 'test');
         await Cart.continueButton.click();
-        await expect (Cart.formError).toBeDisplayed();
-     
+        await expect(Cart.formError).toBeDisplayed();
+
     })
+
+    it('verify cancelling the "Your information" step', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        await Products.addToCard.click();
+        await Cart.cartButton.click();
+        await Cart.checkoutButton.click();
+        await Cart.informationForm('Anna', 'Novicka', 'test');
+        await expect(Cart.checkoutInformationTitle).toBeDisplayed();
+        await Cart.continueButton.click();
+        await Cart.cancelYourInformation.click();
+        await expect(Cart.yourCartTitle).toBeDisplayed();
+
+    })
+
     it.only('verify cancelling the "Your information" step', async () => {
         await LoginPage.open()
         await LoginPage.login('standard_user', 'secret_sauce')
@@ -97,12 +113,14 @@ describe('Cart', () => {
         await Products.addToCard.click();
         await Cart.cartButton.click();
         await Cart.checkoutButton.click();
-        await expect(Cart.checkoutInformationTitle).toBeDisplayed();
+        await Cart.informationForm('Anna', 'Novicka', 'test');
+        await Cart.continueButton.click();
+        await expect(Cart.checkoutOverviewTitle).toBeDisplayed();
         await Cart.cancelYourInformation.click();
-        await expect (Cart.yorCartTitle).toBeDisplayed();
-     
+        await expect(Products.poductsList).toBeDisplayed();
+
     })
 
 
-    
+
 });
