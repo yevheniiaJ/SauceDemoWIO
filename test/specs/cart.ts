@@ -106,7 +106,7 @@ describe('Cart', () => {
 
     })
 
-    it.only('verify cancelling the "Your information" step', async () => {
+    it('verify cancelling the "Your information" step', async () => {
         await LoginPage.open()
         await LoginPage.login('standard_user', 'secret_sauce')
         await browser.pause(1000);
@@ -118,6 +118,20 @@ describe('Cart', () => {
         await expect(Cart.checkoutOverviewTitle).toBeDisplayed();
         await Cart.cancelYourInformation.click();
         await expect(Products.poductsList).toBeDisplayed();
+    })
+
+    it.only('verify checkout confirmation', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        await Products.addToCard.click();
+        await Cart.cartButton.click();
+        await Cart.checkoutButton.click();
+        await Cart.informationForm('Anna', 'Novicka', 'test');
+        await Cart.continueButton.click();
+        await Cart.finishButton.click();
+        await expect(Cart.checkoutCompleteTitle).toBeDisplayed();
+        await expect (ProductsDetailsPage.cartBadge).not.toBeDisplayed();
 
     })
 

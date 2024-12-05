@@ -67,6 +67,14 @@ class Cart extends Page {
         return $(`//span[text()='Checkout: Overview']`)
     }
 
+    public get finishButton() {
+        return $(`//button[@id='finish']`)
+    }
+
+    public get checkoutCompleteTitle() {
+        return $(`//span[text()='Checkout: Complete!']`)
+    }
+
 
     public async informationForm(firstname: string, lastname: string, zip: string) {
         await this.firstNameField.setValue(firstname);
