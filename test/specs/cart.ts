@@ -132,7 +132,35 @@ describe('Cart', () => {
         await Cart.finishButton.click();
         await expect(Cart.checkoutCompleteTitle).toBeDisplayed();
         await expect (ProductsDetailsPage.cartBadge).not.toBeDisplayed();
+    })
 
+    it.only('verify checkout confirmation', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        await Products.addToCard.click();
+        await Cart.cartButton.click();
+        await Cart.checkoutButton.click();
+        await Cart.informationForm('Anna', 'Novicka', 'test');
+        await Cart.continueButton.click();
+        await Cart.finishButton.click();
+        await expect(Cart.checkoutCompleteTitle).toBeDisplayed();
+        await expect (ProductsDetailsPage.cartBadge).not.toBeDisplayed();
+    })
+
+
+    it.only('verify the "Back home" button ', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        await Products.addToCard.click();
+        await Cart.cartButton.click();
+        await Cart.checkoutButton.click();
+        await Cart.informationForm('Anna', 'Novicka', 'test');
+        await Cart.continueButton.click();
+        await Cart.finishButton.click();
+        await Cart.backHomeButton.click();
+        await expect(Products.productsTitle).toBeDisplayed();
     })
 
 
