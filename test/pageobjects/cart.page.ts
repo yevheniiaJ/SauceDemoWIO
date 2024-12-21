@@ -79,6 +79,13 @@ class Cart extends Page {
         return $(`//button[@name='back-to-products']`)
     }
 
+    public get totalPrice() {
+        return $(`//*[@data-test='subtotal-label']`)
+    }
+
+    public get totalTax() {
+        return $(`//*[@data-test='tax-label']`)
+    }
 
     public async informationForm(firstname: string, lastname: string, zip: string) {
         await this.firstNameField.setValue(firstname);

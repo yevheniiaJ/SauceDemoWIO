@@ -50,7 +50,7 @@ class Products extends Page {
 
     public get productsTitle(){
         return $('//*[@id="header_container"]/div[2]/span')
-    }
+    }    
 }
 
    export async function addSeveralProducts(selectors: string []): Promise<void> {

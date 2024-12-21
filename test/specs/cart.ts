@@ -106,7 +106,7 @@ describe('Cart', () => {
 
     })
 
-    it('verify cancelling the "Your information" step', async () => {
+    it('verify cancelling the "Checkout: Overview" step', async () => {
         await LoginPage.open()
         await LoginPage.login('standard_user', 'secret_sauce')
         await browser.pause(1000);
@@ -120,7 +120,7 @@ describe('Cart', () => {
         await expect(Products.poductsList).toBeDisplayed();
     })
 
-    it.only('verify checkout confirmation', async () => {
+    it('verify checkout confirmation', async () => {
         await LoginPage.open()
         await LoginPage.login('standard_user', 'secret_sauce')
         await browser.pause(1000);
@@ -134,22 +134,7 @@ describe('Cart', () => {
         await expect (ProductsDetailsPage.cartBadge).not.toBeDisplayed();
     })
 
-    it.only('verify checkout confirmation', async () => {
-        await LoginPage.open()
-        await LoginPage.login('standard_user', 'secret_sauce')
-        await browser.pause(1000);
-        await Products.addToCard.click();
-        await Cart.cartButton.click();
-        await Cart.checkoutButton.click();
-        await Cart.informationForm('Anna', 'Novicka', 'test');
-        await Cart.continueButton.click();
-        await Cart.finishButton.click();
-        await expect(Cart.checkoutCompleteTitle).toBeDisplayed();
-        await expect (ProductsDetailsPage.cartBadge).not.toBeDisplayed();
-    })
-
-
-    it.only('verify the "Back home" button ', async () => {
+    it('verify the "Back home" button ', async () => {
         await LoginPage.open()
         await LoginPage.login('standard_user', 'secret_sauce')
         await browser.pause(1000);
@@ -161,6 +146,33 @@ describe('Cart', () => {
         await Cart.finishButton.click();
         await Cart.backHomeButton.click();
         await expect(Products.productsTitle).toBeDisplayed();
+    })
+
+
+    it.only('verify taxes ', async () => {
+        await LoginPage.open()
+        await LoginPage.login('standard_user', 'secret_sauce')
+        await browser.pause(1000);
+        const priceItem1: string = await $(`//*[@id="inventory_container"]/div/div[1]/div[2]/div[2]/div`).getText();
+        const priceItem2: string = await $(`//*[@id="inventory_container"]/div/div[2]/div[2]/div[2]/div`).getText();
+        const priceItem3: string = await $(`//*[@id="inventory_container"]/div/div[3]/div[2]/div[2]/div`).getText();
+        const sum: number = parseFloat(priceItem1.replace(/[^0-9.]/g, '')) + parseFloat(priceItem2.replace(/[^0-9.]/g, '')) + parseFloat(priceItem3.replace(/[^0-9.]/g, ''))
+        const tax: number = parseFloat((sum*8/100).toFixed(2));
+        const selectors = [
+            `//*[@data-test="add-to-cart-sauce-labs-backpack"]`,
+            `//*[@data-test="add-to-cart-sauce-labs-bike-light"]`,
+            `//*[@data-test="add-to-cart-sauce-labs-bolt-t-shirt"]`
+        ]
+        await addSeveralProducts(selectors);
+        await Cart.cartButton.click();
+        await Cart.checkoutButton.click();
+        await Cart.informationForm('Anna', 'Novicka', 'test');
+        await Cart.continueButton.click();
+        const totalPrice = parseFloat((await Cart.totalPrice.getText()).replace(/[^0-9.]/g, ''));
+        const totalTax = parseFloat((await Cart.totalTax.getText()).replace(/[^0-9.]/g, ''));
+        await expect(totalPrice).toEqual(sum);
+        await expect (totalTax).toEqual(tax);
+        
     })
 
 
