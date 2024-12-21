@@ -30,7 +30,7 @@ export const config: Options.Testrunner = {
     // of the config file unless it's absolute.
     //
     specs: [
-        './test/specs/humburgerMenu.ts'
+        './test/specs/cart.ts'
     ],
     // Patterns to exclude.
     exclude: [
