@@ -1,6 +1,10 @@
 import type { Options } from '@wdio/types'
+import { login } from './login.ts'
+import * as fs from './login.ts'
+
+
 export const config: Options.Testrunner = {
-    //
+
     // ====================
     // Runner Configuration
     // ====================
@@ -13,7 +17,7 @@ export const config: Options.Testrunner = {
             transpileOnly: true
         }
     },
-    
+
     //
     // ==================
     // Specify Test Files
@@ -36,6 +40,17 @@ export const config: Options.Testrunner = {
     exclude: [
         // 'path/to/excluded/files'
     ],
+
+    before: async () => {
+        await fs.saveCookies();
+    },
+
+    beforeEach: async () => {
+        await fs.loadCookies();
+    },
+    afterEach: async () => {
+            sessionStorage.clear();
+    },
     //
     // ============
     // Capabilities
@@ -61,6 +76,7 @@ export const config: Options.Testrunner = {
     capabilities: [{
         browserName: 'chrome'
     }],
+
 
     //
     // ===================
@@ -118,7 +134,7 @@ export const config: Options.Testrunner = {
     // Make sure you have the wdio adapter package for the specific framework installed
     // before running any tests.
     framework: 'mocha',
-    
+
     //
     // The number of times to retry the entire specfile when it fails as a whole
     // specFileRetries: 1,

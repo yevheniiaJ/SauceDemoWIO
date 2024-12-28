@@ -6,6 +6,7 @@ import { addSeveralProducts } from '../pageobjects/products.page.ts'
 import ProductsDetailsPage from '../pageobjects/productDetails.page.ts'
 
 describe('Cart', () => {
+
     it('verify the continue shopping feature', async () => {
         await LoginPage.open()
         await LoginPage.login('standard_user', 'secret_sauce')
@@ -134,9 +135,9 @@ describe('Cart', () => {
         await expect (ProductsDetailsPage.cartBadge).not.toBeDisplayed();
     })
 
-    it('verify the "Back home" button ', async () => {
-        await LoginPage.open()
-        await LoginPage.login('standard_user', 'secret_sauce')
+    it.only('verify the "Back home" button ', async () => {
+       // await LoginPage.open()
+      //  await LoginPage.login('standard_user', 'secret_sauce')
         await browser.pause(1000);
         await Products.addToCard.click();
         await Cart.cartButton.click();
@@ -149,7 +150,7 @@ describe('Cart', () => {
     })
 
 
-    it.only('verify taxes ', async () => {
+    it('verify taxes ', async () => {
         await LoginPage.open()
         await LoginPage.login('standard_user', 'secret_sauce')
         await browser.pause(1000);
@@ -174,7 +175,4 @@ describe('Cart', () => {
         await expect (totalTax).toEqual(tax);
         
     })
-
-
-
 });
