@@ -6,26 +6,20 @@ import ProductsDetailsPage from '../pageobjects/productDetails.page.ts'
 
 describe('Products', () => {
     it('add a product to the cart', async () => {
-        await LoginPage.open()
-        await LoginPage.login('standard_user', 'secret_sauce')
-        await browser.pause(1000);
+        
         await Products.addToCard.click();
         expect(await Products.remove.isDisplayed())
     })
 
     it('remove a product from the cart ', async () => {
-        await LoginPage.open()
-        await LoginPage.login('standard_user', 'secret_sauce')
-        await browser.pause(1000);
+       
         await Products.remove.click();
         expect(await Products.addToCard.isDisplayed())
 
     })
 
     it('apply the "Price (low to high)" filter', async () => {
-        await LoginPage.open()
-        await LoginPage.login('standard_user', 'secret_sauce')
-        await browser.pause(1000);
+        
         await Products.filterButton.click();
         await Products.priceLowToHigher.click();
         const prices: number[] = await Products.poductsList.map(async (element) => {
@@ -38,9 +32,7 @@ describe('Products', () => {
     });
 
     it('apply the "Price (high to Low)" filter', async () => {
-        await LoginPage.open()
-        await LoginPage.login('standard_user', 'secret_sauce')
-        await browser.pause(1000);
+        
         await Products.filterButton.click();
         await Products.priceHighToLow.click();
         const prices: number[] = await Products.poductsList.map(async (element) => {
@@ -53,9 +45,7 @@ describe('Products', () => {
     });
 
     it('apply the "Name (A to Z)" filter', async () => {
-        await LoginPage.open()
-        await LoginPage.login('standard_user', 'secret_sauce')
-        await browser.pause(1000);
+        
         await Products.filterButton.click();
         await Products.nameASC.click();
     
@@ -67,9 +57,7 @@ describe('Products', () => {
     });
 
     it('apply the "Name (Z to A)" filter', async () => {
-        await LoginPage.open()
-        await LoginPage.login('standard_user', 'secret_sauce')
-        await browser.pause(1000);
+       
         await Products.filterButton.click();
         await Products.nameDSC.click();
     
@@ -81,9 +69,7 @@ describe('Products', () => {
     });
 
     it('add several products to the cart', async () => {
-        await LoginPage.open()
-        await LoginPage.login('standard_user', 'secret_sauce')
-        await browser.pause(1000);
+        
         const selectors = [
             `//*[@data-test="add-to-cart-sauce-labs-backpack"]`,
             `//*[@data-test="add-to-cart-sauce-labs-bike-light"]`,

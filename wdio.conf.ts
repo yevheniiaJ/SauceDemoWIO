@@ -1,6 +1,8 @@
 import type { Options } from '@wdio/types'
 import { login } from './login.ts'
 import * as fs from './login.ts'
+import { getTagName } from 'webdriverio/build/commands/element';
+
 
 
 export const config: Options.Testrunner = {
@@ -34,23 +36,32 @@ export const config: Options.Testrunner = {
     // of the config file unless it's absolute.
     //
     specs: [
-        './test/specs/cart.ts'
+        './test/specs/login.ts'
     ],
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
     ],
 
-    before: async () => {
-        await fs.saveCookies();
+    before: async() => {
+        await fs.saveCookies('standard_user', 'secret_sauce');
     },
 
-    beforeEach: async () => {
+    beforeTest: async (test) => {
+       const testTitle = test.description;
+       if (testTitle?.includes('invalid log in ') ) {
         await fs.loadCookies();
+        await browser.url('https://www.saucedemo.com/inventory.html');
+        }
+        return;
     },
-    afterEach: async () => {
-            sessionStorage.clear();
+
+    afterTest: async () => {
+        await browser.reloadSession();
     },
+
+
+
     //
     // ============
     // Capabilities
@@ -74,10 +85,10 @@ export const config: Options.Testrunner = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        browserName: 'chrome'
+        browserName: 'chrome',
     }],
 
-
+    baseUrl: 'https://www.saucedemo.com/',
     //
     // ===================
     // Test Configurations
