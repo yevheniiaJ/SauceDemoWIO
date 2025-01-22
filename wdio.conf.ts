@@ -1,6 +1,8 @@
 import type { Options } from '@wdio/types'
 import { login } from './login.ts'
 import * as fs from './login.ts'
+
+
 import { getTagName } from 'webdriverio/build/commands/element';
 
 
@@ -43,13 +45,11 @@ export const config: Options.Testrunner = {
         // 'path/to/excluded/files'
     ],
 
-    before: async() => {
-        await fs.saveCookies('standard_user', 'secret_sauce');
-    },
-
     beforeTest: async (test) => {
        const testTitle = test.description;
-       if (testTitle?.includes('invalid log in ') ) {
+       if (!testTitle?.includes('invalid log in ') ) {
+        await fs.login('standard_user', 'secret_sauce');
+        await fs.saveCookiesCookies();
         await fs.loadCookies();
         await browser.url('https://www.saucedemo.com/inventory.html');
         }
