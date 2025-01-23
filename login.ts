@@ -11,10 +11,8 @@ export async function login(username: string, password: string): Promise<void> {
     await passwordField.setValue(password);
     await submitButton.click();
 
-    //await browser.waitUntil(async () => {
-    //    return await $(`//div[@class='app_logo']`).isDisplayed();
-   // });
 };
+
 export async function saveCookiesCookies(): Promise<void> {
     const cookies = await browser.getCookies();
     fs.writeFileSync('cookies.json', JSON.stringify(cookies, null, 2), 'utf-8');
