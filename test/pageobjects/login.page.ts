@@ -22,7 +22,7 @@ class LoginPage extends Page {
     }
 
     public get error () {
-        return $('//*[@data-test="error"]');
+        return  $('//*[@data-test="error"]');
     }
 
     /**

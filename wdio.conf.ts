@@ -1,6 +1,7 @@
 import type { Options } from '@wdio/types'
 import { login } from './login.ts'
 import * as fs from './login.ts'
+import { LoginUsers, LoginPasswords } from './test/enum/login.enum.ts';
 
 
 import { getTagName } from 'webdriverio/build/commands/element';
@@ -44,16 +45,19 @@ export const config: Options.Testrunner = {
     exclude: [
         // 'path/to/excluded/files'
     ],
+    before: async () => {
+        await fs.login(LoginUsers.StandartUser, LoginPasswords.Default);
+        await fs.saveCookiesCookies();
+    },
 
     beforeTest: async (test) => {
-       const testTitle = test.description;
-       if (!testTitle?.includes('invalid log in ') ) {
-        await fs.login('standard_user', 'secret_sauce');
-        await fs.saveCookiesCookies();
-        await fs.loadCookies();
-        await browser.url('https://www.saucedemo.com/inventory.html');
+        const testTitle = test.title;
+        if (testTitle?.includes('invalid log in')) {
+            console.log("successful log in  is skipped");
+        } else {
+            await fs.loadCookies();
+            await browser.url('https://www.saucedemo.com/inventory.html');
         }
-        return;
     },
 
     afterTest: async () => {
