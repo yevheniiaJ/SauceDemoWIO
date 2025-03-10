@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "ject",
+    "test": "jest",
     "lint": "eslint",
     "wdio": "wdio run ./wdio.conf.ts"
   },
