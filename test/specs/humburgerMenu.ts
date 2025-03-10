@@ -3,6 +3,9 @@ import LoginPage from '../pageobjects/login.page.ts';
 import HumburgerMenu from '../pageobjects/humburgerMenu.ts'
 import ProductsDetailsPage from '../pageobjects/productDetails.page.ts'
 import Products from '../pageobjects/products.page.js'
+import OverallComponents from '../components/overall.components.ts'
+import { ElementState } from '../enum/products.enum.ts';
+import { stringUrl } from '../../login.js'
 
 describe('Humburger Menu', () => {
 
@@ -40,12 +43,14 @@ describe('Humburger Menu', () => {
 
     it('Verify Log out ', async () => {
        
-        const url1 = await browser.getUrl();
+        //const url1 = await browser.getUrl();
+        await OverallComponents.verifyPageElement(ElementState.URL, undefined, await stringUrl('inventory.html'))
         await HumburgerMenu.menu.click();
         await HumburgerMenu.logOutLink.click();
-        const url = await browser.getUrl();
-        expect(url1).toEqual('https://www.saucedemo.com/inventory.html');
-        expect(url).toEqual('https://www.saucedemo.com/')
+       // const url = await browser.getUrl();
+        await OverallComponents.verifyPageElement(ElementState.URL, undefined, await stringUrl(''))
+        //expect(url1).toEqual('https://www.saucedemo.com/inventory.html');
+       // expect(url).toEqual('https://www.saucedemo.com/')
     })
 
     it.only('Verify Log out ', async () => {
