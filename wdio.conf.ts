@@ -1,6 +1,11 @@
 import type { Options } from '@wdio/types'
 import { login } from './login.ts'
 import * as fs from './login.ts'
+import { LoginUsers, LoginPasswords } from './test/enum/login.enum.ts';
+
+
+import { getTagName } from 'webdriverio/build/commands/element';
+
 
 
 export const config: Options.Testrunner = {
@@ -34,23 +39,33 @@ export const config: Options.Testrunner = {
     // of the config file unless it's absolute.
     //
     specs: [
-        './test/specs/cart.ts'
+        './test/specs/productDetails.ts'
     ],
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
     ],
-
     before: async () => {
-        await fs.saveCookies();
+        await fs.login(LoginUsers.StandartUser, LoginPasswords.Default);
+        await fs.saveCookiesCookies();
     },
 
-    beforeEach: async () => {
-        await fs.loadCookies();
+    beforeTest: async (test) => {
+        const testTitle = test.title;
+        if (testTitle?.includes('invalid log in')) {
+            console.log("successful log in  is skipped");
+        } else {
+            await fs.loadCookies();
+            await browser.url('https://www.saucedemo.com/inventory.html');
+        }
     },
-    afterEach: async () => {
-            sessionStorage.clear();
+
+    afterTest: async () => {
+        await browser.reloadSession();
     },
+
+
+
     //
     // ============
     // Capabilities
@@ -74,10 +89,10 @@ export const config: Options.Testrunner = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        browserName: 'chrome'
+        browserName: 'chrome',
     }],
 
-
+    baseUrl: 'https://www.saucedemo.com/',
     //
     // ===================
     // Test Configurations

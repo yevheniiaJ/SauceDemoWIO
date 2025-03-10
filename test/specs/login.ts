@@ -1,27 +1,27 @@
-import { expect } from '@wdio/globals'
+
 import LoginPage from '../pageobjects/login.page.js'
+import { login, stringUrl } from '../../login.js'
+import { LoginError, LoginPasswords, LoginUsers } from '../enum/login.enum.ts'
+import OverallComponents from "../components/overall.components.ts"
+import { ElementState } from '../enum/products.enum.ts';
 
 
-describe('Autorization ', () => {
+describe('Authorization', () => {
+
     it('login with valid credentials', async () => {
-        await LoginPage.open()
-        await LoginPage.login('standard_user', 'secret_sauce')
-        await browser.pause(1000);
-        await expect(await browser.getUrl()).toEqual('https://www.saucedemo.com/inventory.html')
+        await OverallComponents.verifyPageElement(ElementState.URL, undefined, await stringUrl('inventory.html'))
     })
 
-
-    it('login with invalid username', async () => {
-        await LoginPage.open()
-        await LoginPage.login('standard_user21', 'secret_sauce')
-        await browser.pause(1000)
-        await expect(await LoginPage.error.getText()).toEqual('Epic sadface: Username and password do not match any user in this service')
+    it(`invalid log in 'username'`, async function () {
+        await login('invalidUsername', LoginPasswords.Default);
+        await OverallComponents.verifyPageElement(ElementState.TEXT, LoginPage.error, LoginError.Error);
     });
 
-    it('login with invalid password', async () => {
-        await LoginPage.open()
-        await LoginPage.login('standard_user', 'secret_sauce21')
-        await browser.pause(1000)
-        await expect(await LoginPage.error.getText()).toEqual('Epic sadface: Username and password do not match any user in this service')
+    it(`invalid log in 'password'`, async () => {
+        await login(LoginUsers.StandartUser, 'invalidPassword');
+        await OverallComponents.verifyPageElement(ElementState.TEXT, LoginPage.error, LoginError.Error);
     })
 });
+
+
+
