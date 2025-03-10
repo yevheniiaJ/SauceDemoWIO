@@ -1,6 +1,6 @@
 {
   "name": "saucedemoCopy",
-  "type": "module",
+  "type": "commonjs",
   "devDependencies": {
     "@wdio/local-runner": "^9.2.1",
     "@wdio/mocha-framework": "^9.1.3",
