@@ -14,9 +14,10 @@ describe('Humburger Menu', () => {
         await HumburgerMenu.menu.waitForDisplayed({ timeout: 6000 });
         await HumburgerMenu.menu.click();
         await HumburgerMenu.aboutLink.click();
-        const url = await browser.getUrl();
-        console.log(url);
-        expect(url).toEqual('https://saucelabs.com/');
+        await OverallComponents.verifyPageElement(ElementState.URL, undefined, await stringUrl(''))
+       // const url = await browser.getUrl();
+       // console.log(url);
+       // expect(url).toEqual('https://saucelabs.com/');
         await browser.reloadSession();
     })
 
