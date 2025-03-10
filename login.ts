@@ -2,12 +2,12 @@
 import * as fs from 'fs';
 
 
-export async function navigateTo(path: string): Promise<string> {
+export async function stringUrl(path: string): Promise<string> {
     return `${browser.options.baseUrl}${path}`;
 }
 
 export async function login(username: string, password: string): Promise<void> {
-    await browser.url(await navigateTo(""));
+    await browser.url(await stringUrl(""));
     const userNameField = $('//*[@data-test="username"]');
     const passwordField = $('//*[@data-test="password"]');
     const submitButton = $('//*[@data-test="login-button"]');
@@ -24,7 +24,7 @@ export async function saveCookiesCookies(): Promise<void> {
 }
 
 export async function loadCookies(): Promise<void> {
-    await browser.url(await navigateTo(""));
+    await browser.url(await stringUrl(""));
     if (fs.existsSync('cookies.json')) {
         const cookies = JSON.parse(fs.readFileSync('cookies.json', 'utf-8'));
         for (const cookie of cookies) {

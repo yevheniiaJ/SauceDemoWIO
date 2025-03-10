@@ -11,6 +11,9 @@
     "typescript": "^5.6.3"
   },
   "scripts": {
+    "build": "tsc",
+    "test": "ject",
+    "lint": "eslint",
     "wdio": "wdio run ./wdio.conf.ts"
   },
   "dependencies": {
