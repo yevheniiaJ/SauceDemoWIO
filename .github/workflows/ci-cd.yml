@@ -1,32 +1,33 @@
-name: Run Tests on Push/Merge
+name: CI/CD Pipeline
 
+# Trigger this workflow on push or pull request to the main branch
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch
+      - '**'
   pull_request:
     branches:
-      - main  # Trigger on pull request to the main branch
+      - main
 
 jobs:
-  test:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+  build:
+    runs-on: ubuntu-latest  # Use an Ubuntu runner
 
     steps:
-      # Step 1: Checkout the code
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2  # Checkout the code from the repository
 
-      # Step 2: Set up Node.js environment
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'  # Specify the Node.js version you need
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'  # Specify the Node.js version you need
 
-      # Step 3: Install dependencies
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies
+      run: npm install  # Install project dependencies
 
-      # Step 4: Run tests (assuming you are using a testing framework like Jest, Mocha, etc.)
-      - name: Run tests
-        run: npm test
+    - name: Run WebdriverIO tests
+      run: npx wdio run wdio.conf.ts
+      working-directory: /home/runner/work/SauceDemoWIO/package.json
+      continue-on-error: false  # Ensures the workflow fails if tests fail
+
+
