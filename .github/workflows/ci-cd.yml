@@ -25,6 +25,8 @@ jobs:
     - name: Install dependencies
       run: npm install  # Install project dependencies
 
-    - name: Run E2E tests (WebdriverIO)
-      run: npx wdio run wdio.conf.ts  # Run WebdriverIO tests
+    - name: Run WebdriverIO tests
+      run: npx wdio run wdio.conf.ts
+      continue-on-error: false  # Ensures the workflow fails if tests fail
+
 
