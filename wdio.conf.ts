@@ -87,10 +87,11 @@ export const config: Options.Testrunner = {
     //
     capabilities: [{
         browserName: 'chrome',
-            'goog:chromeOptions': {
-              args: ['--disable-dev-shm-usage', '--no-sandbox']
-            }
-    }],
+        'goog:chromeOptions': {
+          args: [`--user-data-dir=/tmp/chrome-profile-${process.pid}`]
+        }
+      }],
+      
 
     baseUrl: 'https://www.saucedemo.com/',
     //
