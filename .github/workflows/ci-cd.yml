@@ -13,36 +13,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code
+      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v2
 
-        - name: Print working directory
-          run: pwd
+      # Step 2: Print the working directory
+      - name: Print working directory
+        run: pwd
 
+      # Step 3: List files in the current directory (root of the project)
+      - name: List files in the current directory
+        run: ls -la
 
-      # Step 2: Set up Node.js
+      # Step 4: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'  # Use the Node.js version that matches your local setup
+          node-version: '20.3.1'
 
-      # Step 3: Clear npm cache
-      - name: Clear npm cache
-        run: npm cache clean --force
-
-      # Step 4: Install dependencies
+      # Step 5: Install dependencies
       - name: Install dependencies
-        run: |
-          npm install
-          ls -la  # Verify that package.json and node_modules are present
-
-      # Step 5: Check node_modules directory
-      - name: Check node_modules
-        run: ls -al node_modules  # Ensure that node_modules is populated
+        run: npm install
 
       # Step 6: Run WebdriverIO tests
       - name: Run WebdriverIO tests
-        run: |
-          ls -la  # Verify that wdio.conf.ts is in the current directory
-          npx wdio run wdio.conf.ts
+        run: npx wdio run wdio.conf.ts
