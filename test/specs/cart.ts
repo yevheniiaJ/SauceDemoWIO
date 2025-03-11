@@ -1,6 +1,5 @@
 import { expect } from '@wdio/globals'
-import Products from '../pageobjects/products.page.js'
-import LoginPage from '../pageobjects/login.page.ts';
+import Products from '../pageobjects/products.page.ts'
 import Cart from '../pageobjects/cart.page.ts';
 import { addSeveralProducts } from '../pageobjects/products.page.ts'
 import ProductsDetailsPage from '../pageobjects/productDetails.page.ts'

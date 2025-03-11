@@ -1,10 +1,7 @@
 import type { Options } from '@wdio/types'
-import { login } from './login.ts'
 import * as fs from './login.ts'
 import { LoginUsers, LoginPasswords } from './test/enum/login.enum.ts';
 
-
-import { getTagName } from 'webdriverio/build/commands/element';
 
 
 
@@ -39,7 +36,7 @@ export const config: Options.Testrunner = {
     // of the config file unless it's absolute.
     //
     specs: [
-        './test/specs/productDetails.ts'
+        './test/specs/**.ts'
     ],
     // Patterns to exclude.
     exclude: [

@@ -1,6 +1,6 @@
 
-import LoginPage from '../pageobjects/login.page.js'
-import { login, stringUrl } from '../../login.js'
+import LoginPage from '../pageobjects/login.page.ts'
+import { login, stringUrl } from '../../login.ts'
 import { LoginError, LoginPasswords, LoginUsers } from '../enum/login.enum.ts'
 import OverallComponents from "../components/overall.components.ts"
 import { ElementState } from '../enum/products.enum.ts';

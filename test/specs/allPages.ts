@@ -1,4 +1,4 @@
-import LoginPage from '../pageobjects/login.page.ts';
+
 import AllPages from '../pageobjects/all.pages.ts';
 
 describe ('All Pages', () => {

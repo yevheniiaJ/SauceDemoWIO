@@ -1,8 +1,7 @@
 import { expect } from '@wdio/globals'
-import LoginPage from '../pageobjects/login.page.ts';
 import HumburgerMenu from '../pageobjects/humburgerMenu.ts'
 import ProductsDetailsPage from '../pageobjects/productDetails.page.ts'
-import Products from '../pageobjects/products.page.js'
+import Products from '../pageobjects/products.page.ts'
 import OverallComponents from '../components/overall.components.ts'
 import { ElementState } from '../enum/products.enum.ts';
 import { stringUrl } from '../../login.js'
