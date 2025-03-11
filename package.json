@@ -14,10 +14,7 @@
     "typescript": "^5.6.3"
   },
   "scripts": {
-    "build": "tsc",
-    "test": "jest",
-    "lint": "eslint",
-    "wdio": "wdio run ./wdio.conf.ts"
+    "wdio": "wdio run wdio.conf.ts"
   },
   "dependencies": {
     "webdriverio": "^9.5.0"
