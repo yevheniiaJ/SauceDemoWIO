@@ -1,6 +1,5 @@
 name: CI/CD Pipeline
 
-# Trigger this workflow on push or pull request to the main branch
 on:
   push:
     branches:
@@ -11,22 +10,35 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Use an Ubuntu runner
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2  # Checkout the code from the repository
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'  # Specify the Node.js version you need
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'  # Use the Node.js version that matches your local setup
 
-    - name: Install dependencies
-      run: npm install  # Install project dependencies
+      # Step 3: Clear npm cache
+      - name: Clear npm cache
+        run: npm cache clean --force
 
-    - name: Run WebdriverIO tests
-      run: npx wdio run wdio.conf.ts
-      continue-on-error: false  # Ensures the workflow fails if tests fail
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        run: |
+          npm install
+          ls -la  # Verify that package.json and node_modules are present
 
+      # Step 5: Check node_modules directory
+      - name: Check node_modules
+        run: ls -al node_modules  # Ensure that node_modules is populated
 
+      # Step 6: Run WebdriverIO tests
+      - name: Run WebdriverIO tests
+        run: |
+          ls -la  # Verify that wdio.conf.ts is in the current directory
+          npx wdio run wdio.conf.ts
