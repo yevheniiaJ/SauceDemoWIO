@@ -17,6 +17,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+        - name: Print working directory
+          run: pwd
+
+
       # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
