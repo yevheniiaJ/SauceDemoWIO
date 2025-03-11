@@ -27,7 +27,6 @@ jobs:
 
     - name: Run WebdriverIO tests
       run: npx wdio run wdio.conf.ts
-      working-directory: /home/runner/work/SauceDemoWIO/package.json
       continue-on-error: false  # Ensures the workflow fails if tests fail
 
 
