@@ -26,7 +26,12 @@ export async function saveCookiesCookies(): Promise<void> {
 export async function loadCookies(): Promise<void> {
     await browser.url(await stringUrl(""));
     if (fs.existsSync('cookies.json')) {
-        const cookies = JSON.parse(fs.readFileSync('cookies.json', 'utf-8'));
+        let cookies = JSON.parse(fs.readFileSync('cookies.json', 'utf-8'));
+        cookies = cookies.map((cookie: { expiry: number; }) => ({
+            ...cookie,
+            expiry: cookie.expiry ? Math.floor(cookie.expiry) : undefined
+          }));
+      
         for (const cookie of cookies) {
             await browser.setCookies(cookie);
 
