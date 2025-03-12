@@ -16,12 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Print working directory
-        run: pwd
-
-      - name: List files in the current directory
-        run: ls -la
-
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -38,14 +32,14 @@ jobs:
       - name: Install ChromeDriver
         run: npm install --save-dev chromedriver
 
-      - name: Clean WebDriver Cache
-        run: rm -rf ~/.npm/_npx
+      - name: Start Xvfb
+        run: Xvfb :99 -ac -screen 0 1280x1024x16 &
 
-      - name: Update WebdriverIO & Chrome Driver
-        run: |
-          export CI=true
-          npm install --save-dev webdriverio
-          npx wdio config --yes
+      - name: Set DISPLAY
+        run: export DISPLAY=:99
+
+      - name: Update Chrome Driver
+        run: npx webdriver-manager update
 
       - name: Run WebdriverIO tests
         run: npx wdio run wdio.conf.ts
