@@ -90,7 +90,8 @@ export const config: Options.Testrunner = {
           browserName: 'chrome',
           'goog:chromeOptions': {
             args: ['--headless', '--no-sandbox', '--disable-dev-shm-usage', '--user-data-dir=/tmp/chrome-user-data'],
-          }
+          },
+          bidi: true
         },
       ],
       
