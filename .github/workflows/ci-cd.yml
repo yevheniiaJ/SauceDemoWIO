@@ -13,39 +13,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Print the working directory
       - name: Print working directory
         run: pwd
 
-      # Step 3: List files in the current directory (root of the project)
       - name: List files in the current directory
         run: ls -la
 
-      # Step 4: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18'
 
-      # Step 5: Install dependencies
       - name: Install dependencies
         run: npm ci
 
-      # Step 6: Clean WebDriver Cache
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Install ChromeDriver
+        run: npm install --save-dev chromedriver
+
       - name: Clean WebDriver Cache
         run: rm -rf ~/.npm/_npx
 
-      # Step 7: Update WebdriverIO & Chrome Driver
       - name: Update WebdriverIO & Chrome Driver
         run: |
           export CI=true
           npm install --save-dev webdriverio
           npx wdio config --yes
 
-      # Step 8: Run WebdriverIO tests
       - name: Run WebdriverIO tests
         run: npx wdio run wdio.conf.ts
