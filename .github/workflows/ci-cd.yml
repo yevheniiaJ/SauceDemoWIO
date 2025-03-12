@@ -42,8 +42,8 @@ jobs:
       # Step 7: Update WebdriverIO & Chrome Driver
       - name: Update WebdriverIO & Chrome Driver
         run: |
+          export CI=true
           npm install --save-dev webdriverio
-          npx wdio config
           npx wdio config --yes
 
       # Step 8: Run WebdriverIO tests
