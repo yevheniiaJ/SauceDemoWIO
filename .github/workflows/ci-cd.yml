@@ -35,6 +35,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Clean WebDriver Cache
+        run: rm -rf ~/.npm/_npx
+
+      - name: Update WebdriverIO & Chrome Driver
+        run: |
+    npm install --save-dev webdriverio
+    npx wdio config
+
+
       # Step 6: Run WebdriverIO tests
       - name: Run WebdriverIO tests
         run: npx wdio run wdio.conf.ts
