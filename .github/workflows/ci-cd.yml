@@ -33,7 +33,7 @@ jobs:
 
       # Step 5: Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Clean WebDriver Cache
         run: rm -rf ~/.npm/_npx
