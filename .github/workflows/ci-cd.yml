@@ -1,45 +1,29 @@
-name: CI/CD Pipeline
-
-on:
-  push:
-    branches:
-      - '**'
-  pull_request:
-    branches:
-      - main
-
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      # ✅ 1: Checkout репозиторію
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # ✅ 2: Встановлення Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '18'
 
+      # ✅ 3: Встановлення залежностей
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Google Chrome
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
+      # ✅ 4: **Завантаження кешу кук (до запуску тестів)**
+      - name: Load Cached Cookies
+        uses: actions/cache@v3
+        with:
+          path: cookies.json
+          key: cookies-${{ github.run_id }}
 
-      - name: Install ChromeDriver
-        run: npm install --save-dev chromedriver
-
-      - name: Start Xvfb
-        run: Xvfb :99 -ac -screen 0 1280x1024x16 &
-
-      - name: Set DISPLAY
-        run: export DISPLAY=:99
-
-      - name: Update Chrome Driver
-        run: npx webdriver-manager update
-
+      # ✅ 5: Запуск тестів WebdriverIO
       - name: Run WebdriverIO tests
         run: npx wdio run wdio.conf.ts
