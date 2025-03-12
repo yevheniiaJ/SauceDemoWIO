@@ -85,11 +85,15 @@ export const config: Options.Testrunner = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
-        browserName: 'chrome',
-        
-    }],
-
+    capabilities: [
+        {
+          browserName: 'chrome',
+          'goog:chromeOptions': {
+            args: ['--no-sandbox', '--disable-dev-shm-usage', '--user-data-dir=/tmp/chrome-user-data'],
+          },
+        },
+      ],
+      
     baseUrl: 'https://www.saucedemo.com/',
     //
     // ===================
