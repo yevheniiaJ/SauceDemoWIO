@@ -4,10 +4,6 @@ import Page from './page.ts';
 
 class ProductsDetailsPage extends Page {
 
-    public get productLink() {
-        return $(`//a[@id='item_4_title_link']`);
-    }
-
     public get productName() {
         return $(`//div[@data-test='inventory-item-name']`);
     }
@@ -18,10 +14,6 @@ class ProductsDetailsPage extends Page {
 
     public get addToCart () {
         return $(`//button[@id='add-to-cart']`);
-    }
-
-    public get cartBadge () {
-        return $(`//span[@class='shopping_cart_badge']`);
     }
 
     public get removeProduct () {

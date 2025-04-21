@@ -1,6 +1,5 @@
 name: CI/CD Pipeline
 
-# Trigger this workflow on push or pull request to the main branch
 on:
   push:
     branches:
@@ -11,23 +10,42 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Use an Ubuntu runner
+    runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2  # Checkout the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'  # Specify the Node.js version you need
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
 
-    - name: Install dependencies
-      run: npm install  # Install project dependencies
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Run WebdriverIO tests
-      run: npx wdio run wdio.conf.ts
-      working-directory: /home/runner/work/SauceDemoWIO/package.json
-      continue-on-error: false  # Ensures the workflow fails if tests fail
+      - name: Install Google Chrome
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable
 
+      - name: Install ChromeDriver
+        run: npm install --save-dev chromedriver
 
+      - name: Start Xvfb
+        run: Xvfb :99 -ac -screen 0 1280x1024x16 &
+
+      - name: Set DISPLAY
+        run: export DISPLAY=:99
+
+      - name: Update Chrome Driver
+        run: npx webdriver-manager update
+
+      - name: Cache Cookies
+        uses: actions/cache@v3
+        with:
+          path: cookies.json
+          key: cookies-${{ github.run_id }}
+
+      - name: Run WebdriverIO tests
+        run: npx wdio run wdio.conf.ts

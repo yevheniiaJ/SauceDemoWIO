@@ -1,5 +1,7 @@
 import { $ } from '@wdio/globals'
 import Page from './page.ts';
+import { CartState } from '../enum/cart.enum.ts';
+
 
 class Cart extends Page {
 
@@ -88,9 +90,26 @@ class Cart extends Page {
     }
 
     public async informationForm(firstname: string, lastname: string, zip: string) {
+        await this.checkoutButton.click();
         await this.firstNameField.setValue(firstname);
         await this.lastNamneField.setValue(lastname);
         await this.postalCodeField.setValue(zip);
+        
+    }
+
+    async verifyItemsInCart(cartState: string, num?: number) {
+
+        switch (cartState) {
+            case CartState.ADDED_ITEMS:
+                await this.cartButton.click();
+                const items = $$(`//div[@data-test='item-quantity']`);
+                expect(await items.length).toEqual(num);
+                break;
+            case CartState.EMPTY:
+                const item = $$(`//div[@data-test='item-quantity']`);
+                expect(item).not.toExist();
+                break;
+        }
     }
 }
 

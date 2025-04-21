@@ -2,9 +2,6 @@ import type { Options } from '@wdio/types'
 import * as fs from './login.ts'
 import { LoginUsers, LoginPasswords } from './test/enum/login.enum.ts';
 
-
-
-
 export const config: Options.Testrunner = {
 
     // ====================
@@ -36,7 +33,7 @@ export const config: Options.Testrunner = {
     // of the config file unless it's absolute.
     //
     specs: [
-        './test/specs/**.ts'
+        './test/specs/**/*.ts'
     ],
     // Patterns to exclude.
     exclude: [
@@ -44,21 +41,28 @@ export const config: Options.Testrunner = {
     ],
     before: async () => {
         await fs.login(LoginUsers.StandartUser, LoginPasswords.Default);
-        await fs.saveCookiesCookies();
+        await fs.saveCookies();
+
     },
 
     beforeTest: async (test) => {
+
         const testTitle = test.title;
-        if (testTitle?.includes('invalid log in')) {
+        if (testTitle?.includes('separate log in')) {
             console.log("successful log in  is skipped");
         } else {
             await fs.loadCookies();
             await browser.url('https://www.saucedemo.com/inventory.html');
-        }
+            await browser.execute(() => {
+                localStorage.clear(); 
+              });
+              await browser.refresh();
+      }
     },
 
     afterTest: async () => {
         await browser.reloadSession();
+
     },
 
 
@@ -85,9 +89,17 @@ export const config: Options.Testrunner = {
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
-        browserName: 'chrome',
-    }],
+    capabilities: [
+        {
+            browserName: 'chrome',
+            'goog:chromeOptions': {
+                // headless needs to be added for CI/CD
+                args: ['--headless', 
+                    '--no-sandbox', '--disable-dev-shm-usage', '--user-data-dir=/tmp/chrome-user-data'],
+
+            },
+        },
+    ],
 
     baseUrl: 'https://www.saucedemo.com/',
     //
@@ -99,7 +111,7 @@ export const config: Options.Testrunner = {
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: 'info',
     //
-    // Set specific log levels per logger
+    // Set specific log levels per logger 
     // loggers:
     // - webdriver, webdriverio
     // - @wdio/browserstack-service, @wdio/devtools-service, @wdio/sauce-service
