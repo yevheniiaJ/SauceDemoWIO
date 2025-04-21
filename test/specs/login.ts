@@ -12,12 +12,12 @@ describe('Authorization', () => {
         await OverallComponents.verifyPageElement(ElementState.URL, undefined, await stringUrl('inventory.html'))
     })
 
-    it(`invalid log in 'username'`, async function () {
+    it(`separate log in, invalid log in 'username'`, async function () {
         await login('invalidUsername', LoginPasswords.Default);
         await OverallComponents.verifyPageElement(ElementState.TEXT, LoginPage.error, LoginError.Error);
     });
 
-    it(`invalid log in 'password'`, async () => {
+    it(`separate log in, invalid log in 'password'`, async () => {
         await login(LoginUsers.StandartUser, 'invalidPassword');
         await OverallComponents.verifyPageElement(ElementState.TEXT, LoginPage.error, LoginError.Error);
     })

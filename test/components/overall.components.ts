@@ -2,14 +2,44 @@
 import Products from '../pageobjects/products.page.ts';
 import { ElementState, FilterType, PageAction } from '../enum/products.enum.ts';
 import ProductsDetailsPage from '../pageobjects/productDetails.page.ts'
+import { ChainablePromiseElement } from 'webdriverio';
+import HumburgerMenu from '../pageobjects/humburgerMenu.ts'
 
 class OverallComponents {
 
-    async verifyPageElement(elementState: string, locator?: ChainablePromiseElement, expectedResult?: string | number) {
+    async menuElement(action: string, option: ChainablePromiseElement) {
+        await browser.pause(1000);
+        switch (action) {
+            case PageAction.HUMBURGER_MENU_ABOUT:
+                await HumburgerMenu.menu.click();
+                const getUrl: string = await option.getAttribute('href');
+                await option.click();
+                return getUrl;
+                break;
+            case PageAction.HUMBURGER_MENU_ALLITEMS:
+                await HumburgerMenu.menu.click();
+                await option.click();
+                break;
+            case PageAction.HUMBURGER_MENU_RESET:
+                await HumburgerMenu.menu.click();
+                await option.click();
+                break;
+            case PageAction.HUMBURGER_MENU_LOGOUT:
+                await HumburgerMenu.menu.click();
+                await option.click();
+                break;
+            case PageAction.Humburger_Menu_CLOSE:
+                await HumburgerMenu.menu.click();
+                await option.click();
+                break;
+        }
+    }
+
+    async verifyPageElement(elementState: String, locator?: ChainablePromiseElement, expectedResult?: ChainablePromiseElement | String | Number) {
         await browser.pause(1000);
         switch (elementState) {
             case ElementState.DISPLAYED:
-                expect(await locator.isDisplayed);
+                await expect(locator).toBeDisplayed();
                 break;
             case ElementState.NOT_EXIST:
                 await expect(locator).not.toExist();
@@ -18,21 +48,18 @@ class OverallComponents {
                 await expect(await browser.getUrl()).toEqual(expectedResult);
                 break;
             case ElementState.TEXT:
+                if (!locator) throw new Error('Locator is undefined');
                 await expect(await locator.getText()).toEqual(expectedResult);
-                break;
-            case PageAction.OPEN_PAGE:
-                await ProductsDetailsPage.productLink.click();
                 break;
             case PageAction.BACK_TO_PAGE:
                 await ProductsDetailsPage.backToProductsButton.click();
                 break;
-            case ElementState.STRICT_EQUAL:
-                expect(await locator.length).toStrictEqual(expectedResult);
+            case ElementState.NOT_Displayed:
+                await expect(locator).not.toBeDisplayed();
                 break;
             default:
                 throw new Error(`invalid element state ${elementState}`)
         }
-
     }
 
     async applyFilter(locator: ChainablePromiseElement, filter: string) {
@@ -45,7 +72,7 @@ class OverallComponents {
         await browser.pause(2000);
         switch (filterType) {
             case FilterType.PRICE_LOW_TO_HIGH:
-                const lowPrices: number[] = await Products.poductsList.map(async (element) => {
+                const lowPrices: number[] = await Products.productsList.map(async (element) => {
                     const priceText = await element.getText();
                     return parseInt(priceText.replace(/[^0-9.]/g, ''));
                 })
@@ -53,7 +80,7 @@ class OverallComponents {
                 expect(lowPrices).toEqual(lowPortedPrices);
                 break;
             case FilterType.PRICE_HIGH_TO_LOW:
-                const highPrices: number[] = await Products.poductsList.map(async (element) => {
+                const highPrices: number[] = await Products.productsList.map(async (element) => {
                     const priceText = await element.getText();
                     return parseInt(priceText.replace(/[^0-9.]/g, ''));
                 })

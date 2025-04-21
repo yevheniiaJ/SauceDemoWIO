@@ -18,9 +18,12 @@ export async function login(username: string, password: string): Promise<void> {
 
 };
 
-export async function saveCookiesCookies(): Promise<void> {
+export async function saveCookies(): Promise<void> {
     const cookies = await browser.getCookies();
-    fs.writeFileSync('cookies.json', JSON.stringify(cookies, null, 2), 'utf-8');
+    fs.writeFileSync('cookies.json', JSON.stringify(cookies, null, 2), {
+        encoding: 'utf-8',
+        flag: 'w'
+    });
 }
 
 export async function loadCookies(): Promise<void> {
